@@ -64,7 +64,7 @@ class controlador {
   if($_POST)
   {
       $nombre = $_POST["nombre"];
-      $password = $_POST["contrasena"];
+      $password = sha1($_POST["contrasena"]);
       
       $resultado = $this->modelo->existeUsuario($nombre);
       if($resultado != false)
@@ -193,9 +193,107 @@ class controlador {
     //Relizamos el listado de los usuarios
     $this->listado();
   }
-
+    /**
+   * Método de la clase controlador que realiza la introduccion de un usuario a 
+   * la base de datos
+   */
   public function adduser() {
-    
+    // Si se ha pulsado el botón registrar...
+    if (isset($_POST)) { // y hermos recibido las variables del formulario y éstas no están vacías...
+      $nif = $_POST["NIF"];
+      $nombre = $_POST['nombre'];
+      $apellido1 = $_POST['apellido1'];
+      $nickname = $_POST['nombreusuario'];
+      $telefonomov = $_POST['telefonomovil'];
+      $departamento = $_POST['departamento'];
+      $password = sha1($_POST['passwd']);
+      $email = $_POST['email'];
+      /* Realizamos la carga de la imagen en el servidor */
+    //  Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
+    //  recibido la imagen correctamente
+    //  Definimos la variable $imagen que almacenará el nombre de imagen 
+    //  que almacenará la Base de Datos inicializada a NULL
+      $imagen = NULL;
+
+      if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
+        // Verificamos la carga de la imagen
+        // Comprobamos si existe el directorio fotos, y si no, lo creamos
+        if (!is_dir("fotos")) {
+          $dir = mkdir("fotos", 0777, true);
+        } else {
+          $dir = true;
+        }
+        // Ya verificado que la carpeta uploads existe movemos el fichero seleccionado a dicha carpeta
+        if ($dir) {
+          //Para asegurarnos que el nombre va a ser único...
+          $nombrefichimg = time() . "-" . $_FILES["imagen"]["name"];
+          // Movemos el fichero de la carpeta temportal a la nuestra
+          $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "fotos/" . $nombrefichimg);
+          $imagen = $nombrefichimg;
+          // Verficamos que la carga se ha realizado correctamente
+          if ($movfichimg) {
+            $imagencargada = true;
+          } else {
+            $imagencargada = false;
+            $this->mensajes[] = [
+                "tipo" => "danger",
+                "mensaje" => "Error: La imagen no se cargó correctamente! :("
+            ];
+            $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
+          }
+        }
+      }
+      // Si no se han producido errores realizamos el registro del usuario
+      if (count($errores) == 0) {
+        $resultModelo = $this->modelo->adduser([
+            'nif' => $nif,
+            'nombre' => $nombre,
+            'apellido1' => $apellido1,
+            'nickname'=> $nickname,
+            'telefonomov' => $telefonomov,
+            'departamento' => $departamento,
+            'password' => $password,
+            'email' => $email,
+            'imagen' => $imagen
+        ]);
+        if ($resultModelo["correcto"]) :
+          $this->mensajes[] = [
+              "tipo" => "success",
+              "mensaje" => "El usuarios se registró correctamente!! :)"
+          ];
+        else :
+          $this->mensajes[] = [
+              "tipo" => "danger",
+              "mensaje" => "El usuario no pudo registrarse!! :( <br />({$resultModelo["error"]})"
+          ];
+        endif;
+      } else {
+        $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "Datos de registro de usuario erróneos!! :("
+        ];
+      }
+    }
+
+    $parametros = [
+        "tituloventana" => "Registro",
+        "datos" => [
+            "nif" => isset($nif) ? $nif : "",
+            "nombre" => isset($nombre) ? $nombre : "",
+            "apellido1"  => isset($apellido1) ? $apellido1 : "",
+            "nickname" => isset($nickname) ? $nickname : "",
+            "telefonomov" => isset($telefonomov) ? $telefonomov : "",
+            "departamento" => isset($departamento) ? $departamento : "",
+            "password" => isset($password) ? $password : "",
+            "email" => isset($email) ? $email : "",
+            "imagen" => isset($imagen) ? $imagen : ""
+        ],
+        "mensajes" => $this->mensajes
+    ];
+    require_once 'vistas/includes/header.php';
+    //Visualizamos la vista asociada al registro de usuarios
+    include_once 'vistas/registro.php';
+  
   }
 
   /**

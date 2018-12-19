@@ -191,16 +191,29 @@ public function verlogs(){
       //Inicializamos la transacción
       $this->conexion->beginTransaction();
       //Definimos la instrucción SQL parametrizada 
-      $sql = "INSERT INTO usuarios(nombre,password,email,imagen)
-                         VALUES (:nombre,:password,:email , :imagen)";
+      $sql = "INSERT INTO `usuarios`(`idUsuarios`, `NIF`, `nombre`, `apellido1`, `apellido2`, `imagen`, `nickname`, `password`, "
+              . "`rol`, `telefonomov`, `telefonofijo`, `email`, `departamento`, `paginaweb`, `direccionblog`, `twitter`,"
+              . " `activo`, `Fecha`, `Asignaturas`) "
+              . "VALUES (NULL, :nif, :nombre, :apellido1, apellido2, :imagen,:nickname,:password, Profesor,:telefonomovil,:telefonofijo,"
+              . ":email, :departamento,:paginaweb,:direccionblog,:twitter,0,SYSDATE(),'')";
       // Preparamos la consulta...
       $query = $this->conexion->prepare($sql);
       // y la ejecutamos indicando los valores que tendría cada parámetro
       $query->execute([
+          'nif' => $datos["NIF"],
           'nombre' => $datos["nombre"],
+          'apellido1'=> $datos["apellido1"],
+          'apellido2'=> $datos["apellido2"],
+          'imagen' => $datos["imagen"],
+          'nickname' => $datos["nickname"],
           'password' => $datos["password"],
+          'telefonomovil' => $datos["telefonomov"],
+          'telefonofijo' => $datos["telefonofijo"],
           'email' => $datos["email"],
-          'imagen' => $datos["imagen"]
+          'departamento' => $datos["departamento"],
+          'paginaweb' => $datos["paginaweb"],
+          'direccionblog' => $datos["direccionblog"],
+          'twitter' => $datos["twitter"]
       ]); //Supervisamos si la inserción se realizó correctamente... 
       if ($query) {
         $this->conexion->commit(); // commit() confirma los cambios realizados durante la transacción

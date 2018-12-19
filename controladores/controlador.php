@@ -72,6 +72,8 @@ class controlador {
           if($resultado["password"] == $password)
           {
               $_SESSION["login"] = $resultado;
+              $_SESSION["usuario"] = $nombre;
+              $_SESSION["rol"] = $resultado["rol"];
               header('Location: index.php?action=inicio');
           }
           else
@@ -87,6 +89,9 @@ class controlador {
   }
   
   public function logout() {
+      $nombre = $_SESSION["usuario"];
+      $rol = $_SESSION["rol"];
+      $resultado = $this->modelo->verificarlogs($nombre, $rol, "Cierre Sesion");
       session_destroy();
       header('Location: index.php?action=login');
   }
@@ -198,8 +203,17 @@ class controlador {
    * la base de datos
    */
   public function adduser() {
+      $errores = array();
     // Si se ha pulsado el botón registrar...
-    if (isset($_POST)) { // y hermos recibido las variables del formulario y éstas no están vacías...
+      $nif = "";
+      $nombre = "";
+      $apellido1 = "";
+      $nickname = "";
+      $telefonomov = "";
+      $departamento = "";
+      $password = "";
+      $email = "";
+    if (isset($_POST["enviar"])) { // y hermos recibido las variables del formulario y éstas no están vacías...
       $nif = $_POST["NIF"];
       $nombre = $_POST['nombre'];
       $apellido1 = $_POST['apellido1'];

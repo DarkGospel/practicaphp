@@ -58,17 +58,25 @@ class modelo {
    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
    * @return type
       */
+  public function verificarlogs($usuario, $rol, $accion){
+      $procedimiento = "CALL logs('$usuario', '$rol', '$accion')";
+      $query2 = $this->conexion->prepare($procedimiento);
+      $query2->execute(['nombre' => $usuario,
+              'rol' => $rol,
+              'accion' => $accion]);
+  }
   public function existeUsuario($usuario) {
     try 
     {
         $sql = "SELECT * FROM usuarios WHERE nickname=:nombre";
-        $procedimiento = "CALL logs('$usuario', 'administrador', 'inicio sesion')";
+        $sql2 = "SELECT rol FROM usuarios WHERE nickname=:nombre";
         $query = $this->conexion->prepare($sql);
-        $query2 = $this->conexion->prepare($procedimiento);
         $query->execute(['nombre' => $usuario]);
-        $query2->execute(['nombre' => $usuario,
-            'perfil' => "administrador",
-            'accion' => "Inicio de sesion"]);
+        $resultsquery = $this->conexion->prepare($sql2);
+        $resultsquery->execute(['nombre'=>$usuario]);
+        $usuariolog = $resultsquery-> fetch(PDO::FETCH_ASSOC);
+        $usuariolog = $usuariolog["rol"];
+        $this->verificarlogs($usuario, $usuariolog, "Inicio sesion");
         if(isset($query))
         {
             $resultado = $query->fetch(PDO::FETCH_ASSOC);
@@ -191,29 +199,32 @@ public function verlogs(){
       //Inicializamos la transacción
       $this->conexion->beginTransaction();
       //Definimos la instrucción SQL parametrizada 
-      $sql = "INSERT INTO `usuarios`(`idUsuarios`, `NIF`, `nombre`, `apellido1`, `apellido2`, `imagen`, `nickname`, `password`, "
+      $sql = "INSERT INTO `usuarios`(`NIF`, `nombre`, `apellido1`, `apellido2`, `imagen`, `nickname`, `password`, "
               . "`rol`, `telefonomov`, `telefonofijo`, `email`, `departamento`, `paginaweb`, `direccionblog`, `twitter`,"
-              . " `activo`, `Fecha`, `Asignaturas`) "
-              . "VALUES (NULL, :nif, :nombre, :apellido1, apellido2, :imagen,:nickname,:password, Profesor,:telefonomovil,:telefonofijo,"
-              . ":email, :departamento,:paginaweb,:direccionblog,:twitter,0,SYSDATE(),'')";
+              . " `activo`, `Fecha`) "
+              . "VALUES (:nif, :nombre, :apellido1, :apellido2, :imagen, :nickname, :password, :rol, :telefonomovil,:telefonofijo,"
+              . ":email, :departamento,:paginaweb,:direccionblog,:twitter, :activo, :fecha)";
       // Preparamos la consulta...
       $query = $this->conexion->prepare($sql);
       // y la ejecutamos indicando los valores que tendría cada parámetro
       $query->execute([
-          'nif' => $datos["NIF"],
+          'nif' => $datos["nif"],
           'nombre' => $datos["nombre"],
           'apellido1'=> $datos["apellido1"],
-          'apellido2'=> $datos["apellido2"],
+          'apellido2'=> "",
           'imagen' => $datos["imagen"],
           'nickname' => $datos["nickname"],
           'password' => $datos["password"],
+          'rol' => "Profesor",
           'telefonomovil' => $datos["telefonomov"],
-          'telefonofijo' => $datos["telefonofijo"],
+          'telefonofijo' => "",
           'email' => $datos["email"],
           'departamento' => $datos["departamento"],
-          'paginaweb' => $datos["paginaweb"],
-          'direccionblog' => $datos["direccionblog"],
-          'twitter' => $datos["twitter"]
+            'paginaweb' =>"",
+         'direccionblog' => "",
+         'twitter' => "",
+          'activo' => 1,
+          "fecha" => "SYSDATE()"
       ]); //Supervisamos si la inserción se realizó correctamente... 
       if ($query) {
         $this->conexion->commit(); // commit() confirma los cambios realizados durante la transacción

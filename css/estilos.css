@@ -1,10 +1,20 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 03-dic-2018, 19:53:20
-    Author     : 2DAW
-*/
-
+.inicio{
+    background-color: #0077b3;
+}
+#imglistar{
+    background-color: #0077b3;
+    border: 1px solid black;
+    width: 270px;
+    height: 280px;
+}
+#imglistar:hover{
+    color: rgba(255, 255, 255, 1) !important;
+    box-shadow: 5px 4px 26px rgba(49, 138, 172, 1);
+    transition: all 0.2s ease;
+}
+.modal-header{
+    background-color: #0077b3;
+}
+.modal-footer{
+    background-color: #0077b3;
+}

@@ -17,9 +17,9 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <?= $_SESSION["login"]["nickname"] ?><span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <?= $_SESSION["login"]["nickname"] ?> (<?= substr($_SESSION["login"]["rol"], 0,3)?>)<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Perfil</a></li>
+              <li><a href="index.php?action=editarperfil&id=<?= $_SESSION["login"]["idUsuarios"] ?>">Perfil</a></li>
             <li><a href="#">Preferencias</a></li>
             </ul>
         <li><a href="index.php?action=logout"><span class="glyphicon glyphicon-off"></span> Logout</a></li>

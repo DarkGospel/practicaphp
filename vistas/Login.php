@@ -25,7 +25,7 @@
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-      <button type="button" class="cancelbtn"><a href="index.php?action=adduser">Registrarse</a></button>
+      <a href="index.php?action=adduser"><button type="button" class="cancelbtn">Registrarse</button></a>
     </div>
 </form>
     </div>

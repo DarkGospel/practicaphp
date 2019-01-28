@@ -93,7 +93,7 @@ class modelo {
     return $resultado;
   }
   
-public function verlogs(){
+  public function verlogs($regsxpag, $pagina){
     $return = [
         "correcto" => FALSE,
         "datos" => NULL,
@@ -101,13 +101,28 @@ public function verlogs(){
     ];
     //Realizamos la consulta...
     try {  //Definimos la instrucción SQL  
-      $sql = "SELECT * FROM log";
+    $inicio= ($pagina>1)? (($pagina*$regsxpag)-$regsxpag): 0;
+    //Preparamos la consulta que vamos a realizar utilizando el parámetro SQL_CALC_FOUND_ROWS, 
+    //que requerido por la función FOUND_ROWS() para poder obtener el número de filas obtenidas de la consulata 
+    //sin tener que realizar otra nueva con el COUNT
+    $sql="SELECT SQL_CALC_FOUND_ROWS * FROM log LIMIT $inicio, $regsxpag";
+    $resultsquery = $this->conexion->query($sql);
+    //$registros=$registros->fetchAll(PDO::FETCH_ASSOC);
+
+    //Calculamos el número de registros obtenidos
+    $totalregistros= $this->conexion->query("SELECT FOUND_ROWS() as total");
+    $totalregistros= $totalregistros->fetch()['total'];
+    //Determinamos el número de páginas de la que constará mi paginación
+    $numpaginas=ceil($totalregistros/$regsxpag);
+    //  $sql = "SELECT * FROM log";
       // Hacemos directamente la consulta al no tener parámetros
-      $resultsquery = $this->conexion->query($sql);
+      
       //Supervisamos si la inserción se realizó correctamente... 
       if ($resultsquery) :
         $return["correcto"] = TRUE;
+        $return["registros"] = $totalregistros;
         $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+        $return["paginas"] = $numpaginas;
       endif; // o no :(
     } catch (PDOException $ex) {
       $return["error"] = $ex->getMessage();
@@ -123,21 +138,36 @@ public function verlogs(){
    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
    * @return type
    */
-  public function listado() {
-    $return = [
+  public function listado($regsxpag, $pagina) {
+   $return = [
         "correcto" => FALSE,
         "datos" => NULL,
         "error" => NULL
     ];
     //Realizamos la consulta...
     try {  //Definimos la instrucción SQL  
-      $sql = "SELECT * FROM usuarios";
+    $inicio= ($pagina>1)? (($pagina*$regsxpag)-$regsxpag): 0;
+    //Preparamos la consulta que vamos a realizar utilizando el parámetro SQL_CALC_FOUND_ROWS, 
+    //que requerido por la función FOUND_ROWS() para poder obtener el número de filas obtenidas de la consulata 
+    //sin tener que realizar otra nueva con el COUNT
+    $sql="SELECT SQL_CALC_FOUND_ROWS * FROM usuarios LIMIT $inicio, $regsxpag";
+    $resultsquery = $this->conexion->query($sql);
+    //$registros=$registros->fetchAll(PDO::FETCH_ASSOC);
+
+    //Calculamos el número de registros obtenidos
+    $totalregistros= $this->conexion->query("SELECT FOUND_ROWS() as total");
+    $totalregistros= $totalregistros->fetch()['total'];
+    //Determinamos el número de páginas de la que constará mi paginación
+    $numpaginas=ceil($totalregistros/$regsxpag);
+    //  $sql = "SELECT * FROM log";
       // Hacemos directamente la consulta al no tener parámetros
-      $resultsquery = $this->conexion->query($sql);
+      
       //Supervisamos si la inserción se realizó correctamente... 
       if ($resultsquery) :
         $return["correcto"] = TRUE;
+        $return["registros"] = $totalregistros;
         $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+        $return["paginas"] = $numpaginas;
       endif; // o no :(
     } catch (PDOException $ex) {
       $return["error"] = $ex->getMessage();
@@ -165,7 +195,7 @@ public function verlogs(){
         //Inicializamos la transacción
         $this->conexion->beginTransaction();
         //Definimos la instrucción SQL parametrizada 
-        $sql = "DELETE FROM usuarios WHERE id=:id";
+        $sql = "DELETE FROM usuarios WHERE idUsuarios=:id";
         $query = $this->conexion->prepare($sql);
         $query->execute(['id' => $id]);
         //Supervisamos si la eliminación se realizó correctamente... 
@@ -199,33 +229,18 @@ public function verlogs(){
       //Inicializamos la transacción
       $this->conexion->beginTransaction();
       //Definimos la instrucción SQL parametrizada 
-      $sql = "INSERT INTO `usuarios`(`NIF`, `nombre`, `apellido1`, `apellido2`, `imagen`, `nickname`, `password`, "
-              . "`rol`, `telefonomov`, `telefonofijo`, `email`, `departamento`, `paginaweb`, `direccionblog`, `twitter`,"
-              . " `activo`, `Fecha`) "
-              . "VALUES (:nif, :nombre, :apellido1, :apellido2, :imagen, :nickname, :password, :rol, :telefonomovil,:telefonofijo,"
-              . ":email, :departamento,:paginaweb,:direccionblog,:twitter, :activo, :fecha)";
+      $sql = "INSERT INTO usuarios(nombre,password,email,imagen, nickname)
+                         VALUES (:nombre,:password,:email,:imagen, :nickname)";
       // Preparamos la consulta...
       $query = $this->conexion->prepare($sql);
       // y la ejecutamos indicando los valores que tendría cada parámetro
       $query->execute([
-          'nif' => $datos["nif"],
           'nombre' => $datos["nombre"],
-          'apellido1'=> $datos["apellido1"],
-          'apellido2'=> "",
-          'imagen' => $datos["imagen"],
           'nickname' => $datos["nickname"],
           'password' => $datos["password"],
-          'rol' => "Profesor",
-          'telefonomovil' => $datos["telefonomov"],
-          'telefonofijo' => "",
           'email' => $datos["email"],
-          'departamento' => $datos["departamento"],
-            'paginaweb' =>"",
-         'direccionblog' => "",
-         'twitter' => "",
-          'activo' => 1,
-          "fecha" => "SYSDATE()"
-      ]); //Supervisamos si la inserción se realizó correctamente... 
+          'imagen' => $datos["imagen"]
+        ]); //Supervisamos si la inserción se realizó correctamente... 
       if ($query) {
         $this->conexion->commit(); // commit() confirma los cambios realizados durante la transacción
         $return["correcto"] = TRUE;
@@ -249,14 +264,14 @@ public function verlogs(){
       //Inicializamos la transacción
       $this->conexion->beginTransaction();
       //Definimos la instrucción SQL parametrizada 
-      $sql = "UPDATE usuarios SET nombre= :nombre, email= :email, imagen= :imagen WHERE id=:id";
+      $sql = "UPDATE usuarios SET nombre= :nombre, imagen= :imagen, email= :email  WHERE idUsuarios=:id";
       $query = $this->conexion->prepare($sql);
       $query->execute([
           'id' => $datos["id"],
           'nombre' => $datos["nombre"],
-          'email' => $datos["email"],
-          'imagen' => $datos["imagen"]
-      ]);
+          'imagen' => $datos["imagen"],
+          'email' => $datos["email"]
+              ]);
       //Supervisamos si la inserción se realizó correctamente... 
       if ($query) {
         $this->conexion->commit();  // commit() confirma los cambios realizados durante la transacción
@@ -280,7 +295,7 @@ public function verlogs(){
 
     if ($id && is_numeric($id)) {
       try {
-        $sql = "SELECT * FROM usuarios WHERE id=:id";
+        $sql = "SELECT * FROM usuarios WHERE idUsuarios=:id";
         $query = $this->conexion->prepare($sql);
         $query->execute(['id' => $id]);
         //Supervisamos que la consulta se realizó correctamente... 
@@ -296,5 +311,58 @@ public function verlogs(){
 
     return $return;
   }
+  public function activar($id){
+  $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
 
+    if ($id && is_numeric($id)) {
+      try {
+        $sql = "UPDATE usuarios SET activo=1  WHERE idUsuarios=:id";
+        $query = $this->conexion->prepare($sql);
+        $query->execute(['id' => $id]);
+        //Supervisamos que la consulta se realizó correctamente... 
+        if ($query) {
+          $return["correcto"] = TRUE;
+          $return["datos"] = $query->fetch(PDO::FETCH_ASSOC);
+        }// o no :(
+      } catch (PDOException $ex) {
+        $return["error"] = $ex->getMessage();
+        //die();
+      }
+    }
+
+    return $return;
+      
+  }
+  
+  public function desactivar($id){
+  $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
+
+    if ($id && is_numeric($id)) {
+      try {
+        $sql = "UPDATE usuarios SET activo=0  WHERE idUsuarios=:id";
+        $query = $this->conexion->prepare($sql);
+        $query->execute(['id' => $id]);
+        //Supervisamos que la consulta se realizó correctamente... 
+        if ($query) {
+          $return["correcto"] = TRUE;
+          $return["datos"] = $query->fetch(PDO::FETCH_ASSOC);
+        }// o no :(
+      } catch (PDOException $ex) {
+        $return["error"] = $ex->getMessage();
+        //die();
+      }
+    }
+
+    return $return;
+      
+  }
+  
 }

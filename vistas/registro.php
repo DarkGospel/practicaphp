@@ -1,29 +1,6 @@
 <!DOCTYPE html>
 <html>
- <?php
-    if(!empty($_POST)){
-        $nombre = $_POST['nombre'];
-        $pasword = $_POST['passwd'];
-        $captcha = $_POST['g-recaptcha-response'];
-        
-        $secret = '6LcvfYIUAAAAAMLKHVwsRJLlKlEQm_EMc7T262CC';
-        if(!$captcha){
-            echo "Por favor verifica el captcha";
-        }
-        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secret&response=$captcha");
-        
-        var_dump($response);
-        
-        $arr = json_decode($response, TRUE);
-        
-        if($arr['success']){
-            echo "<h2>Thanks</h2>";
-        }else{
-            echo '<h3>Error al comprobar Captcha </h3>';
-        }
-        
-    }
-  ?>
+
   <body class="cuerpo">
   <center>
     <div class="container centrar">

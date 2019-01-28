@@ -32,7 +32,7 @@ class controlador {
    * Método que envía al usuario a la página de inicio del sitio y le asigna 
    * el título de manera dinámica
    */
-    public function header() {
+  public function header() {
     $parametros = [
         "tituloventana" => "header"
     ];
@@ -69,17 +69,23 @@ class controlador {
       $resultado = $this->modelo->existeUsuario($nombre);
       if($resultado != false)
       {
-          if($resultado["password"] == $password)
-          {
-              $_SESSION["login"] = $resultado;
-              $_SESSION["usuario"] = $nombre;
-              $_SESSION["rol"] = $resultado["rol"];
-              header('Location: index.php?action=inicio');
-          }
-          else
-          {
-              $_SESSION["error"] = "Usuario o contraseña incorrecta";
-              header('Location: index.php?action=login');
+          if($resultado["activo"] == "1"){
+            if($resultado["password"] == $password )
+            {
+                $_SESSION["login"] = $resultado;
+                $_SESSION["usuario"] = $nombre;
+                $_SESSION["rol"] = $resultado["rol"];
+                $_SESSION["id"] = $resultado["idUsuarios"];
+                header('Location: index.php?action=inicio');
+            }
+            else
+            {
+                $_SESSION["error"] = "Usuario o contraseña incorrecta";
+                header('Location: index.php?action=login');
+            }
+          }else{
+              $_SESSION["error"] = "El usuario no esta activado";
+                header('Location: index.php?action=login');
           }
       }else{
           $_SESSION["error"] = "Usuario o contraseña incorrecta";
@@ -98,16 +104,24 @@ class controlador {
   public function verlogs(){
       $parametros = [
         "tituloventana" => "Moodle",
+        "registros" => NULL,
+        "paginas" => NULL,
         "datos" => NULL,
         "mensajes" => []
     ];
+        //Establecemos el número de registroa a mostrar por página,por defecto 5
+    $regsxpag = (isset($_GET['regsxpag']))? (int)$_GET['regsxpag']:5;
+    //Establecemos el la página que vamos a mostrar, por página,por defecto la 1
+    $pagina = (isset($_GET['pagina']))? (int)$_GET['pagina']:1;
     // Realizamos la consulta y almacenmos los resultados en la variable $resultModelo
-    $resultModelo = $this->modelo->verlogs();
+    $resultModelo = $this->modelo->verlogs($regsxpag, $pagina);
     // Si la consulta se realizó correctamente transferimos los datos obtenidos
     // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
     // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
     if ($resultModelo["correcto"]) :
       $parametros["datos"] = $resultModelo["datos"];
+      $parametros["registros"] = $resultModelo["registros"];
+      $parametros["paginas"] = $resultModelo["paginas"];
       //Definimos el mensaje para el alert de la vista de que todo fue correctamente
       $this->mensajes[] = [
           "tipo" => "success",
@@ -134,19 +148,26 @@ class controlador {
    * infomación a la vista correspondiente para su visualización
    */
   public function listado() {
-    // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
-    $parametros = [
+      $parametros = [
         "tituloventana" => "Moodle",
+        "registros" => NULL,
+        "paginas" => NULL,
         "datos" => NULL,
         "mensajes" => []
     ];
+        //Establecemos el número de registroa a mostrar por página,por defecto 5
+    $regsxpag = (isset($_GET['regsxpag']))? (int)$_GET['regsxpag']:5;
+    //Establecemos el la página que vamos a mostrar, por página,por defecto la 1
+    $pagina = (isset($_GET['pagina']))? (int)$_GET['pagina']:1;
     // Realizamos la consulta y almacenmos los resultados en la variable $resultModelo
-    $resultModelo = $this->modelo->listado();
+    $resultModelo = $this->modelo->listado($regsxpag, $pagina);
     // Si la consulta se realizó correctamente transferimos los datos obtenidos
     // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
     // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
     if ($resultModelo["correcto"]) :
       $parametros["datos"] = $resultModelo["datos"];
+      $parametros["registros"] = $resultModelo["registros"];
+      $parametros["paginas"] = $resultModelo["paginas"];
       //Definimos el mensaje para el alert de la vista de que todo fue correctamente
       $this->mensajes[] = [
           "tipo" => "success",
@@ -203,30 +224,19 @@ class controlador {
    * la base de datos
    */
   public function adduser() {
-      $errores = array();
-    // Si se ha pulsado el botón registrar...
-      $nif = "";
-      $nombre = "";
-      $apellido1 = "";
-      $nickname = "";
-      $telefonomov = "";
-      $departamento = "";
-      $password = "";
-      $email = "";
-    if (isset($_POST["enviar"])) { // y hermos recibido las variables del formulario y éstas no están vacías...
-      $nif = $_POST["NIF"];
-      $nombre = $_POST['nombre'];
-      $apellido1 = $_POST['apellido1'];
-      $nickname = $_POST['nombreusuario'];
-      $telefonomov = $_POST['telefonomovil'];
-      $departamento = $_POST['departamento'];
-      $password = sha1($_POST['passwd']);
-      $email = $_POST['email'];
+    // Array asociativo que almacenará los mensajes de error que se generen por cada campo
+    $errores = array();
+// Si se ha pulsado el botón guardar...
+    if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hermos recibido las variables del formulario y éstas no están vacías...
+      $nombre = $_POST['txtnombre'];
+      $nickname = $_POST['txtnick'];
+      $password = sha1($_POST['txtpass']);
+      $email = $_POST['txtemail'];
       /* Realizamos la carga de la imagen en el servidor */
-    //  Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
-    //  recibido la imagen correctamente
-    //  Definimos la variable $imagen que almacenará el nombre de imagen 
-    //  que almacenará la Base de Datos inicializada a NULL
+//       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
+//       recibido la imagen correctamente
+//       Definimos la variable $imagen que almacenará el nombre de imagen 
+//       que almacenará la Base de Datos inicializada a NULL
       $imagen = NULL;
 
       if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
@@ -260,13 +270,9 @@ class controlador {
       // Si no se han producido errores realizamos el registro del usuario
       if (count($errores) == 0) {
         $resultModelo = $this->modelo->adduser([
-            'nif' => $nif,
             'nombre' => $nombre,
-            'apellido1' => $apellido1,
-            'nickname'=> $nickname,
-            'telefonomov' => $telefonomov,
-            'departamento' => $departamento,
-            'password' => $password,
+            'nickname' => $nickname,
+            "password" => $password,
             'email' => $email,
             'imagen' => $imagen
         ]);
@@ -290,23 +296,18 @@ class controlador {
     }
 
     $parametros = [
-        "tituloventana" => "Registro",
+        "tituloventana" => "Base de Datos con PHP y PDO",
         "datos" => [
-            "nif" => isset($nif) ? $nif : "",
-            "nombre" => isset($nombre) ? $nombre : "",
-            "apellido1"  => isset($apellido1) ? $apellido1 : "",
-            "nickname" => isset($nickname) ? $nickname : "",
-            "telefonomov" => isset($telefonomov) ? $telefonomov : "",
-            "departamento" => isset($departamento) ? $departamento : "",
-            "password" => isset($password) ? $password : "",
-            "email" => isset($email) ? $email : "",
+            "txtnombre" => isset($nombre) ? $nombre : "",
+            "txtnick" => isset($nickname) ? $nickname : "",
+            "txtpass" => isset($password) ? $password : "",
+            "txtemail" => isset($email) ? $email : "",
             "imagen" => isset($imagen) ? $imagen : ""
         ],
         "mensajes" => $this->mensajes
     ];
-    require_once 'vistas/includes/header.php';
     //Visualizamos la vista asociada al registro de usuarios
-    include_once 'vistas/registro.php';
+    include_once 'vistas/adduser.php';
   
   }
 
@@ -326,8 +327,8 @@ class controlador {
 // Si se ha pulsado el botón actualizar...
     if (isset($_POST['submit'])) { //Realizamos la actualización con los datos existentes en los campos
       $id = $_POST['id']; //Lo recibimos por el campo oculto
-      $nuevonombre = $_POST['txtnombre'];
-      $nuevoemail  = $_POST['txtemail'];
+      $nuevonombre = $_POST['nombre'];
+      $nuevoemail  = $_POST['email'];
       $nuevaimagen = "";
 
       // Definimos la variable $imagen que almacenará el nombre de imagen 
@@ -371,9 +372,9 @@ class controlador {
         $resultModelo = $this->modelo->actuser([
             'id' => $id,
             'nombre' => $nuevonombre,
-            'email' => $nuevoemail,
-            'imagen' => $nuevaimagen
-        ]);
+            'imagen' => $nuevaimagen,
+            'email' => $nuevoemail
+                ]);
         //Analizamos cómo finalizó la operación de registro y generamos un mensaje
         //indicativo del estado correspondiente
         if ($resultModelo["correcto"]) :
@@ -424,16 +425,183 @@ class controlador {
     //Preparamos un array con todos los valores que tendremos que rellenar en
     //la vista adduser: título de la página y campos del formulario
     $parametros = [
-        "tituloventana" => "Base de Datos con PHP y PDO",
+        "tituloventana" => "Moodle",
         "datos" => [
-            "txtnombre" => $valnombre,
-            "txtemail"  => $valemail,
-            "imagen"    => $valimagen
+            "nombre" => $valnombre,
+            "email"  => $valemail,
+            "imagen" => $valimagen
         ],
         "mensajes" => $this->mensajes
     ];
     //Mostramos la vista actuser
     include_once 'vistas/actuser.php';
   }
+  public function editarperfil(){
+    // Array asociativo que almacenará los mensajes de error que se generen por cada campo
+    $errores = array();
+// Inicializamos valores de los campos de texto
+    $valnombre = "";
+    $valemail = "";
+    $valimagen = "";
 
-}
+// Si se ha pulsado el botón actualizar...
+    if (isset($_POST['submit'])) { //Realizamos la actualización con los datos existentes en los campos
+      $id = $_POST['id']; //Lo recibimos por el campo oculto
+      $nuevonombre = $_POST['nombre'];
+      $nuevoemail  = $_POST['email'];
+      $nuevoapellido1 = $_POST['apellido1'];
+      $nuevaimagen = "";
+
+      // Definimos la variable $imagen que almacenará el nombre de imagen 
+      // que almacenará la Base de Datos inicializada a NULL
+      $imagen = NULL;
+
+      if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
+        // Verificamos la carga de la imagen
+        // Comprobamos si existe el directorio fotos, y si no, lo creamos
+        if (!is_dir("fotos")) {
+          $dir = mkdir("fotos", 0777, true);
+        } else {
+          $dir = true;
+        }
+        // Ya verificado que la carpeta fotos existe movemos el fichero seleccionado a dicha carpeta
+        if ($dir) {
+          //Para asegurarnos que el nombre va a ser único...
+          $nombrefichimg = time() . "-" . $_FILES["imagen"]["name"];
+          // Movemos el fichero de la carpeta temportal a la nuestra
+          $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "fotos/" . $nombrefichimg);
+          $imagen = $nombrefichimg;
+          // Verficamos que la carga se ha realizado correctamente
+          if ($movfichimg) {
+            $imagencargada = true;
+          } else {
+            //Si no pudo moverse a la carpeta destino generamos un mensaje que se le
+            //mostrará al usuario en la vista actuser
+            $imagencargada = false;
+            $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
+            $this->mensajes[] = [
+                "tipo" => "danger",
+                "mensaje" => "Error: La imagen no se cargó correctamente! :("
+            ];
+          }
+        }
+      }
+      $nuevaimagen = $imagen;
+
+      if (count($errores) == 0) {
+        //Ejecutamos la instrucción de actualización a la que le pasamos los valores
+        $resultModelo = $this->modelo->actuser([
+            'id' => $id,
+            'nombre' => $nuevonombre,
+            'imagen' => $nuevaimagen,
+            'email' => $nuevoemail
+                ]);
+        //Analizamos cómo finalizó la operación de registro y generamos un mensaje
+        //indicativo del estado correspondiente
+        if ($resultModelo["correcto"]) :
+          $this->mensajes[] = [
+              "tipo" => "success",
+              "mensaje" => "El usuario se actualizó correctamente!! :)"
+          ];
+        else :
+          $this->mensajes[] = [
+              "tipo" => "danger",
+              "mensaje" => "El usuario no pudo actualizarse!! :( <br/>({$resultModelo["error"]})"
+          ];
+        endif;
+      } else {
+        $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "Datos de registro de usuario erróneos!! :("
+        ];
+      }
+
+      // Obtenemos los valores para mostrarlos en los campos del formulario
+      $valnombre = $nuevonombre;
+      $valemail  = $nuevoemail;
+      $valimagen = $nuevaimagen;
+    } else { //Estamos rellenando los campos con los valores recibidos del listado
+      if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
+        $id = $_GET['id'];
+        //Ejecutamos la consulta para obtener los datos del usuario #id
+        $resultModelo = $this->modelo->listausuario($id);
+        //Analizamos si la consulta se realiz´correctamente o no y generamos un
+        //mensaje indicativo
+        if ($resultModelo["correcto"]) :
+          $this->mensajes[] = [
+              "tipo" => "success",
+              "mensaje" => "Los datos del usuario se obtuvieron correctamente!! :)"
+          ];
+          $valnombre = $resultModelo["datos"]["nombre"];
+          $valpellido1 = $resultModelo["datos"]["apellido1"];
+          $valemail  = $resultModelo["datos"]["email"];
+          $valimagen = $resultModelo["datos"]["imagen"];
+        else :
+          $this->mensajes[] = [
+              "tipo" => "danger",
+              "mensaje" => "No se pudieron obtener los datos de usuario!! :( <br/>({$resultModelo["error"]})"
+          ];
+        endif;
+      }
+    }
+    //Preparamos un array con todos los valores que tendremos que rellenar en
+    //la vista adduser: título de la página y campos del formulario
+    $parametros = [
+        "tituloventana" => "Moodle",
+        "datos" => [
+            "nombre" => $valnombre,
+            "apellido1" => $valpellido1,
+            "email"  => $valemail,
+            "imagen" => $valimagen
+        ],
+        "mensajes" => $this->mensajes
+    ];
+    //Mostramos la vista actuser
+    include_once 'vistas/editarperfil.php';
+
+  }
+  public function activar() {
+       if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
+        $id = $_GET['id'];
+        
+        //Ejecutamos la consulta para obtener los datos del usuario #id
+        $resultModelo = $this->modelo->activar($id);
+        //Analizamos si la consulta se realiz´correctamente o no y generamos un
+        //mensaje indicativo
+        if ($resultModelo["correcto"]) :
+          $this->mensajes[] = [
+              "tipo" => "success",
+              "mensaje" => "Usuario dado de alta correctamente!! :)"
+          ];
+        else :
+          $this->mensajes[] = [
+              "tipo" => "danger",
+              "mensaje" => "No se pudieron obtener los datos de usuario!! :( <br/>({$resultModelo["error"]})"
+          ];
+        endif;
+      }
+      $this->listado();
+  }
+  public function desactivar() {
+       if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
+        $id = $_GET['id'];
+        
+        //Ejecutamos la consulta para obtener los datos del usuario #id
+        $resultModelo = $this->modelo->desactivar($id);
+        //Analizamos si la consulta se realiz´correctamente o no y generamos un
+        //mensaje indicativo
+        if ($resultModelo["correcto"]) :
+          $this->mensajes[] = [
+              "tipo" => "success",
+              "mensaje" => "Usuario dado de baja correctamente!! :)"
+          ];
+        else :
+          $this->mensajes[] = [
+              "tipo" => "danger",
+              "mensaje" => "No se pudieron obtener los datos de usuario!! :( <br/>({$resultModelo["error"]})"
+          ];
+        endif;
+      }
+      $this->listado();
+  }
+  }

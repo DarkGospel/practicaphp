@@ -11,13 +11,16 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Administrador</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profesores</a></li>
+          <?php if($_SESSION["login"]["rol"] != "Administrador"):?>
+            <?='<li><a href="#"><span class="glyphicon glyphicon-user"></span> Profesores</a></li>';?>
+         <?php else:?>
+            <?='<li><a href="#"><span class="glyphicon glyphicon-user"></span> Administrador</a></li>';?>
+         <?php endif;?>
         <li><a href="#"><span class="glyphicon glyphicon-envelope"></span> Mensajes</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <?= $_SESSION["login"]["nickname"] ?> (<?= substr($_SESSION["login"]["rol"], 0,3)?>)<span class="caret"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <?= $_SESSION["login"]["nickname"] ?> (<?= substr($_SESSION["login"]["rol"], 0,3)?>)<span class="caret"></span></a>
           <ul class="dropdown-menu">
               <li><a href="index.php?action=editarperfil&id=<?= $_SESSION["login"]["idUsuarios"] ?>">Perfil</a></li>
             <li><a href="#">Preferencias</a></li>

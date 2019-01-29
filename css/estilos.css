@@ -9,7 +9,7 @@
 }
 #imglistar:hover{
     color: rgba(255, 255, 255, 1) !important;
-    box-shadow: 5px 4px 26px rgba(49, 138, 172, 1);
+    box-shadow: 5px 14px 26px black;
     transition: all 0.2s ease;
 }
 .modal-header{

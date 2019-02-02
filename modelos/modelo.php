@@ -365,5 +365,27 @@ class modelo {
     return $return;
       
   }
+  public function listadoexportar(){
+      $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
+    //Realizamos la consulta...
+    try {  //Definimos la instrucción SQL  
+      $sql = "SELECT * FROM usuarios";
+      // Hacemos directamente la consulta al no tener parámetros
+      $resultsquery = $this->conexion->query($sql);
+      //Supervisamos si la inserción se realizó correctamente... 
+      if ($resultsquery) :
+        $return["correcto"] = TRUE;
+        $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+      endif; // o no :(
+    } catch (PDOException $ex) {
+      $return["error"] = $ex->getMessage();
+    }
+
+    return $return;
+  }
   
 }

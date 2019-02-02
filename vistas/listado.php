@@ -5,7 +5,9 @@
     <div class="container centrar">
       <a href="index.php?action=inicio">Inicio</a>
       <div class="container cuerpo text-center centrar">	
-        <p><h2><img class="alineadoTextoImagen" src="images/user.png" width="50px"/>Listar Usuarios</h2> </p>
+          <p><h2><img class="alineadoTextoImagen" src="images/user.png" width="50px"/>Listar Usuarios 
+              <a href="index.php?action=exportarpdf"><img class="alineadoTextoImagen" src="images/PDF.png" width="40px"
+    height="40px"/></a></h2> </p>
       </div>
       <!--Mostramos los mensajes que se hayan generado al realizar el listado-->
       <?php foreach ($parametros["mensajes"] as $mensaje) : ?> 

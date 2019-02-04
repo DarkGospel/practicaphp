@@ -265,11 +265,14 @@ class modelo {
       //Inicializamos la transacción
       $this->conexion->beginTransaction();
       //Definimos la instrucción SQL parametrizada 
-      $sql = "UPDATE usuarios SET nombre= :nombre, imagen= :imagen, email= :email  WHERE idUsuarios=:id";
+      $sql = "UPDATE usuarios SET NIF= :NIF, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, imagen= :imagen, email= :email  WHERE idUsuarios=:id";
       $query = $this->conexion->prepare($sql);
       $query->execute([
           'id' => $datos["id"],
+          'NIF' => $datos["NIF"],
           'nombre' => $datos["nombre"],
+          'apellido1' => $datos["apellido1"],
+          'apellido2' => $datos["apellido2"],
           'imagen' => $datos["imagen"],
           'email' => $datos["email"]
               ]);
@@ -365,5 +368,48 @@ class modelo {
     return $return;
       
   }
-  
+  public function listadoaexportar() {
+    $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
+    //Realizamos la consulta...
+    try {  //Definimos la instrucción SQL  
+      $sql = "SELECT * FROM usuarios";
+      // Hacemos directamente la consulta al no tener parámetros
+      $resultsquery = $this->conexion->query($sql);
+      //Supervisamos si la inserción se realizó correctamente... 
+      if ($resultsquery) :
+        $return["correcto"] = TRUE;
+        $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+      endif; // o no :(
+    } catch (PDOException $ex) {
+      $return["error"] = $ex->getMessage();
+    }
+
+    return $return;
+  }
+  public function exportarlogs() {
+    $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
+    //Realizamos la consulta...
+    try {  //Definimos la instrucción SQL  
+      $sql = "SELECT * FROM log";
+      // Hacemos directamente la consulta al no tener parámetros
+      $resultsquery = $this->conexion->query($sql);
+      //Supervisamos si la inserción se realizó correctamente... 
+      if ($resultsquery) :
+        $return["correcto"] = TRUE;
+        $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+      endif; // o no :(
+    } catch (PDOException $ex) {
+      $return["error"] = $ex->getMessage();
+    }
+
+    return $return;
+  }
 }

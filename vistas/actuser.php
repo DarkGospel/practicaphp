@@ -14,8 +14,17 @@
       <?php endforeach; ?>
       <form action="index.php?action=actuser" method="post" enctype="multipart/form-data">
         <!-- Rellenamos los campos con los valores recibidos desde el controlador -->
+        <label for="NIF">NIF
+          <input type="text" class="form-control" name="NIF" value="<?= $parametros["datos"]["NIF"] ?>" required></label>
+        <br/>
         <label for="txtnombre">Nombre
           <input type="text" class="form-control" name="nombre" value="<?= $parametros["datos"]["nombre"] ?>" required></label>
+        <br/>
+        <label for="apellido1">1erApellido
+          <input type="text" class="form-control" name="apellido1" value="<?= $parametros["datos"]["apellido1"] ?>" required></label>
+        <br/>
+        <label for="apellido2">2ºapellido
+          <input type="text" class="form-control" name="apellido2" value="<?= $parametros["datos"]["apellido2"] ?>" required></label>
         <br/>
         <label for="email">Email
           <input type="email" class="form-control" name="email" value="<?= $parametros["datos"]["email"] ?>" required></label>

@@ -4,6 +4,10 @@
  * Incluimos el modelo para poder acceder a su clase y a los métodos que implementa
  */
 require_once 'modelos/modelo.php';
+require_once'vendor/autoload.php';
+use Spipu\Html2Pdf\Html2Pdf;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
+use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 /**
  * Clase controlador que será la encargada de obtener, para cada tarea, los datos
@@ -200,6 +204,9 @@ class controlador {
       //Analizamos el valor devuelto por el modelo para definir el mensaje a 
       //mostrar en la vista listado
       if ($resultModelo["correcto"]) :
+            $nombre = $_SESSION["usuario"];
+            $rol = $_SESSION["rol"];
+            $resultado = $this->modelo->verificarlogs($nombre, $rol, "Elimino usuario");
         $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "Se eliminó correctamente el usuario $id"
@@ -269,6 +276,9 @@ class controlador {
       }
       // Si no se han producido errores realizamos el registro del usuario
       if (count($errores) == 0) {
+            $nombre = $_SESSION["usuario"];
+            $rol = $_SESSION["rol"];
+            $resultado = $this->modelo->verificarlogs($nombre, $rol, "Añadió usuario");
         $resultModelo = $this->modelo->adduser([
             'nombre' => $nombre,
             'nickname' => $nickname,
@@ -320,15 +330,21 @@ class controlador {
 // Array asociativo que almacenará los mensajes de error que se generen por cada campo
     $errores = array();
 // Inicializamos valores de los campos de texto
+    $nif = "";
     $valnombre = "";
     $valemail = "";
     $valimagen = "";
+    $valapellido1 = "";
+    $valapellido2 = "";
 
 // Si se ha pulsado el botón actualizar...
     if (isset($_POST['submit'])) { //Realizamos la actualización con los datos existentes en los campos
+      $nuevonif  = $_POST["NIF"];
       $id = $_POST['id']; //Lo recibimos por el campo oculto
       $nuevonombre = $_POST['nombre'];
       $nuevoemail  = $_POST['email'];
+      $nuevoapellido1 = $_POST['apellido1'];
+      $nuevoapellido2 = $_POST['apellido2'];
       $nuevaimagen = "";
 
       // Definimos la variable $imagen que almacenará el nombre de imagen 
@@ -368,10 +384,16 @@ class controlador {
       $nuevaimagen = $imagen;
 
       if (count($errores) == 0) {
+            $nombre = $_SESSION["usuario"];
+            $rol = $_SESSION["rol"];
+            $resultado = $this->modelo->verificarlogs($nombre, $rol, "Edito usuario");
         //Ejecutamos la instrucción de actualización a la que le pasamos los valores
         $resultModelo = $this->modelo->actuser([
             'id' => $id,
+            'NIF' => $nuevonif,
             'nombre' => $nuevonombre,
+            'apellido1' => $nuevoapellido1,
+            'apellido2' => $nuevoapellido2,
             'imagen' => $nuevaimagen,
             'email' => $nuevoemail
                 ]);
@@ -396,7 +418,10 @@ class controlador {
       }
 
       // Obtenemos los valores para mostrarlos en los campos del formulario
+      $nif = $nuevonif;
       $valnombre = $nuevonombre;
+      $valapellido1 = $nuevoapellido1;
+      $valapellido2 = $nuevoapellido2;
       $valemail  = $nuevoemail;
       $valimagen = $nuevaimagen;
     } else { //Estamos rellenando los campos con los valores recibidos del listado
@@ -411,7 +436,10 @@ class controlador {
               "tipo" => "success",
               "mensaje" => "Los datos del usuario se obtuvieron correctamente!! :)"
           ];
+          $nif = $resultModelo["datos"]["NIF"];
           $valnombre = $resultModelo["datos"]["nombre"];
+          $valapellido1 = $resultModelo["datos"]["apellido1"];
+          $valapellido2 = $resultModelo['datos']["apellido2"];
           $valemail  = $resultModelo["datos"]["email"];
           $valimagen = $resultModelo["datos"]["imagen"];
         else :
@@ -427,7 +455,10 @@ class controlador {
     $parametros = [
         "tituloventana" => "Moodle",
         "datos" => [
+            "NIF" => $nif,
             "nombre" => $valnombre,
+            "apellido1" => $valapellido1,
+            "apellido2" => $valapellido2,
             "email"  => $valemail,
             "imagen" => $valimagen
         ],
@@ -436,20 +467,25 @@ class controlador {
     //Mostramos la vista actuser
     include_once 'vistas/actuser.php';
   }
-  public function editarperfil(){
-    // Array asociativo que almacenará los mensajes de error que se generen por cada campo
+  public function editarperfil() {
+  // Array asociativo que almacenará los mensajes de error que se generen por cada campo
     $errores = array();
 // Inicializamos valores de los campos de texto
+    $nif = "";
     $valnombre = "";
     $valemail = "";
     $valimagen = "";
+    $valapellido1 = "";
+    $valapellido2 = "";
 
 // Si se ha pulsado el botón actualizar...
     if (isset($_POST['submit'])) { //Realizamos la actualización con los datos existentes en los campos
+      $nuevonif  = $_POST["NIF"];
       $id = $_POST['id']; //Lo recibimos por el campo oculto
       $nuevonombre = $_POST['nombre'];
       $nuevoemail  = $_POST['email'];
       $nuevoapellido1 = $_POST['apellido1'];
+      $nuevoapellido2 = $_POST['apellido2'];
       $nuevaimagen = "";
 
       // Definimos la variable $imagen que almacenará el nombre de imagen 
@@ -489,10 +525,16 @@ class controlador {
       $nuevaimagen = $imagen;
 
       if (count($errores) == 0) {
+            $nombre = $_SESSION["usuario"];
+            $rol = $_SESSION["rol"];
+            $resultado = $this->modelo->verificarlogs($nombre, $rol, "Edito usuario");
         //Ejecutamos la instrucción de actualización a la que le pasamos los valores
         $resultModelo = $this->modelo->actuser([
             'id' => $id,
+            'NIF' => $nuevonif,
             'nombre' => $nuevonombre,
+            'apellido1' => $nuevoapellido1,
+            'apellido2' => $nuevoapellido2,
             'imagen' => $nuevaimagen,
             'email' => $nuevoemail
                 ]);
@@ -517,7 +559,10 @@ class controlador {
       }
 
       // Obtenemos los valores para mostrarlos en los campos del formulario
+      $nif = $nuevonif;
       $valnombre = $nuevonombre;
+      $valapellido1 = $nuevoapellido1;
+      $valapellido2 = $nuevoapellido2;
       $valemail  = $nuevoemail;
       $valimagen = $nuevaimagen;
     } else { //Estamos rellenando los campos con los valores recibidos del listado
@@ -532,8 +577,10 @@ class controlador {
               "tipo" => "success",
               "mensaje" => "Los datos del usuario se obtuvieron correctamente!! :)"
           ];
+          $nif = $resultModelo["datos"]["NIF"];
           $valnombre = $resultModelo["datos"]["nombre"];
-          $valpellido1 = $resultModelo["datos"]["apellido1"];
+          $valapellido1 = $resultModelo["datos"]["apellido1"];
+          $valapellido2 = $resultModelo['datos']["apellido2"];
           $valemail  = $resultModelo["datos"]["email"];
           $valimagen = $resultModelo["datos"]["imagen"];
         else :
@@ -549,14 +596,15 @@ class controlador {
     $parametros = [
         "tituloventana" => "Moodle",
         "datos" => [
+            "NIF" => $nif,
             "nombre" => $valnombre,
-            "apellido1" => $valpellido1,
+            "apellido1" => $valapellido1,
+            "apellido2" => $valapellido2,
             "email"  => $valemail,
             "imagen" => $valimagen
         ],
         "mensajes" => $this->mensajes
     ];
-    //Mostramos la vista actuser
     include_once 'vistas/editarperfil.php';
 
   }
@@ -569,6 +617,9 @@ class controlador {
         //Analizamos si la consulta se realiz´correctamente o no y generamos un
         //mensaje indicativo
         if ($resultModelo["correcto"]) :
+            $nombre = $_SESSION["usuario"];
+            $rol = $_SESSION["rol"];
+            $resultado = $this->modelo->verificarlogs($nombre, $rol, "Alta usuario");
           $this->mensajes[] = [
               "tipo" => "success",
               "mensaje" => "Usuario dado de alta correctamente!! :)"
@@ -591,6 +642,9 @@ class controlador {
         //Analizamos si la consulta se realiz´correctamente o no y generamos un
         //mensaje indicativo
         if ($resultModelo["correcto"]) :
+            $nombre = $_SESSION["usuario"];
+            $rol = $_SESSION["rol"];
+            $resultado = $this->modelo->verificarlogs($nombre, $rol, "Baja usuario");
           $this->mensajes[] = [
               "tipo" => "success",
               "mensaje" => "Usuario dado de baja correctamente!! :)"
@@ -604,4 +658,83 @@ class controlador {
       }
       $this->listado();
   }
+  public function exportarpdf(){
+      ob_start();
+      
+      $resultModelo = $this->modelo->listadoaexportar();
+      $parametros["datos"] = $resultModelo["datos"];
+      //require_once 'vistas/listadoaexportar.php';
+      $html = ob_clean();
+      $html2pdf = new Html2Pdf('P','A4','es','true','UTF-8');
+      $html2pdf->writeHTML("<h1 align='center'>Listado de usuarios</h1><br><hr>");
+      $tabla = '<table align="center" border="1">
+          <tr>
+          <th>Imagen</th>
+          <th>NIF</th>
+          <th>Nombre</th>
+          <!-- <th>Contraseña</th>-->
+          <th>Apellidos</th>
+          <th>Rol</th>
+          <th>Telefono de contacto</th>
+          <th>Departamento</th>
+          <th>Web</th>
+          <th>Activo</th>
+          
+        </tr>';
+      foreach($parametros['datos'] as $d){
+         $tabla .= '<tr>'
+                 . '<td><img src="fotos/'.$d['imagen'].'" width="40" /></td>'
+                 . '<td>'.$d["NIF"].'</td>'
+                 . '<td>'.$d["nombre"].'</td>'
+                 . '<td>'.$d["apellido1"].' '.$d["apellido2"].'</td>'
+                 . '<td>'.$d["rol"].'</td>'
+                 . '<td>'.$d["telefonomov"].'</td>'
+                 . '<td>'.$d["departamento"].'</td>'
+                 
+                ;
+         if(($d["paginaweb"] || $d["direccionblog"] || $d["twitter"]) != NULL):
+            $tabla.= '<td>'.$d["paginaweb"].' '.$d["direccionblog"].' '.$d["twitter"].'</td>';
+            else:
+            $tabla .= '<td>----</td>';
+            endif;
+          if ($d["activo"] == "1"):
+                 $tabla .= '<td>Activo</td>';
+                    else :
+                $tabla .='<td>No activado</td>';
+                 endif;
+          $tabla .= '</tr>';
+      }
+      $tabla .= '</table>';
+      $html2pdf->writeHTML($tabla);
+      $html2pdf->output('listado.pdf');
   }
+  public function exportarlogs(){
+      ob_start();
+      
+      $resultModelo = $this->modelo->exportarlogs();
+      $parametros["datos"] = $resultModelo["datos"];
+      //require_once 'vistas/listadoaexportar.php';
+      $html = ob_clean();
+      $html2pdf = new Html2Pdf('P','A4','es','true','UTF-8');
+      $html2pdf->writeHTML("<h1 align='center'>Listado de usuarios</h1><br><hr>");
+      $tabla = '<table border="1">
+          <tr>
+          <th>Nombre</th>
+          <th>Fecha</th>
+          <th>Rol</th>
+          <th>Acción</th>          
+        </tr>';
+      foreach($parametros['datos'] as $d){
+         $tabla .= '<tr>'
+                 .'<td>'. $d['nombre'].' </td>'
+                 .'<td>'. $d['fecha'].'</td>'
+                 . '<td>'. $d['rol'].'</td>'
+                 . '<td>'. $d['accion'].'</td>';
+         $tabla .= '</tr>';
+      }
+      $tabla .= '</table>';
+      $html2pdf->writeHTML($tabla);
+      $html2pdf->output('logs.pdf');
+  }
+  
+}

@@ -74,6 +74,7 @@
             <?php endif;?>
             <!--Operaciones-->
             <td>
+            <?php if($_SESSION["login"]["rol"] == "Administrador"):?>
                 <?php if($d['idUsuarios'] != $_SESSION["login"]["idUsuarios"]):?>
             <!-- Enviamos a actuser.php, mediante GET, el id del registro que deseamos editar o eliminar: -->           
                 <a href="index.php?action=actuser&id=<?= $d['idUsuarios'] ?>"><img src="images/editar.png" width="17px" height="17px"></a>
@@ -87,6 +88,9 @@
                 <?php else:?>
                 <p>-------</p>
                 <?php endif;?>
+            <?php else:?>
+                <p>-------</p>
+            <?php endif;?>
             </td>
           </tr>
         <?php endforeach; 

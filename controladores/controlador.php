@@ -52,8 +52,8 @@ class controlador {
     include_once 'vistas/Login.php';
   }
   public function login(){
-  require_once 'vistas/includes/headerlogin.php';
-  require_once 'vistas/Login.php';
+    require_once 'vistas/includes/headerlogin.php';
+    require_once 'vistas/Login.php';
   }
   public function inicio(){
       $parametros = [
@@ -236,9 +236,15 @@ class controlador {
 // Si se ha pulsado el botón guardar...
     if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hermos recibido las variables del formulario y éstas no están vacías...
       $nombre = $_POST['txtnombre'];
+      $nif = $_POST["nif"];
+      $apellido1 = $_POST['txtapellido1'];
+      $apellido2 = $_POST['txtapellido2'];
       $nickname = $_POST['txtnick'];
       $password = sha1($_POST['txtpass']);
       $email = $_POST['txtemail'];
+      $telefonomovil = $_POST["txtmovil"];
+      $telefonofijo = $_POST["txtfijo"];
+      $departamento = $_POST["txtdepartamento"];
       /* Realizamos la carga de la imagen en el servidor */
 //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
 //       recibido la imagen correctamente
@@ -276,17 +282,22 @@ class controlador {
       }
       // Si no se han producido errores realizamos el registro del usuario
       if (count($errores) == 0) {
-            $nombre = $_SESSION["usuario"];
-            $rol = $_SESSION["rol"];
-            $resultado = $this->modelo->verificarlogs($nombre, $rol, "Añadió usuario");
         $resultModelo = $this->modelo->adduser([
             'nombre' => $nombre,
+            'nif' => $nif,
+            'apellido1' => $apellido1,
+            'apellido2' => $apellido2,
             'nickname' => $nickname,
             "password" => $password,
             'email' => $email,
+            'movil' => $telefonomovil, 
+            'fijo'=> $telefonofijo,
+            'departamento'=> $departamento,
             'imagen' => $imagen
         ]);
         if ($resultModelo["correcto"]) :
+            $nombre = $_POST["txtnick"];
+            $resultado = $this->modelo->verificarlogs($nombre, "Profesor", "Registrado nuevo usuario");
           $this->mensajes[] = [
               "tipo" => "success",
               "mensaje" => "El usuarios se registró correctamente!! :)"
@@ -297,6 +308,7 @@ class controlador {
               "mensaje" => "El usuario no pudo registrarse!! :( <br />({$resultModelo["error"]})"
           ];
         endif;
+        header('Location: index.php?action=login');
       } else {
         $this->mensajes[] = [
             "tipo" => "danger",
@@ -306,12 +318,18 @@ class controlador {
     }
 
     $parametros = [
-        "tituloventana" => "Base de Datos con PHP y PDO",
+        "tituloventana" => "Registro",
         "datos" => [
             "txtnombre" => isset($nombre) ? $nombre : "",
+            "nif" => isset($nif) ? $nif: "",
+            "txtapellido1" => isset($apellido1) ? $apellido1 : "",
+            "txtapellido2" => isset($apellido2) ? $apellido2 : "",
             "txtnick" => isset($nickname) ? $nickname : "",
             "txtpass" => isset($password) ? $password : "",
             "txtemail" => isset($email) ? $email : "",
+            "txtmovil" => isset($telefonomovil) ? $telefonomovil: "",
+            "txtfijo" => isset($telefonofijo) ? $telefonofijo: "",
+            "txtdepartamento" => isset($departamento) ? $departamento: "",
             "imagen" => isset($imagen) ? $imagen : ""
         ],
         "mensajes" => $this->mensajes
@@ -336,7 +354,9 @@ class controlador {
     $valimagen = "";
     $valapellido1 = "";
     $valapellido2 = "";
-
+    $valdepartamento = "";
+    $valrol = "";
+    
 // Si se ha pulsado el botón actualizar...
     if (isset($_POST['submit'])) { //Realizamos la actualización con los datos existentes en los campos
       $nuevonif  = $_POST["NIF"];
@@ -345,7 +365,10 @@ class controlador {
       $nuevoemail  = $_POST['email'];
       $nuevoapellido1 = $_POST['apellido1'];
       $nuevoapellido2 = $_POST['apellido2'];
+      $nuevorol = $_POST['rol'];
+      $nuevodepartamento = $_POST['departamento'];;
       $nuevaimagen = "";
+      
 
       // Definimos la variable $imagen que almacenará el nombre de imagen 
       // que almacenará la Base de Datos inicializada a NULL
@@ -395,7 +418,9 @@ class controlador {
             'apellido1' => $nuevoapellido1,
             'apellido2' => $nuevoapellido2,
             'imagen' => $nuevaimagen,
-            'email' => $nuevoemail
+            'rol' => $nuevorol,
+            'email' => $nuevoemail,
+            'departamento' => $nuevodepartamento
                 ]);
         //Analizamos cómo finalizó la operación de registro y generamos un mensaje
         //indicativo del estado correspondiente
@@ -424,6 +449,9 @@ class controlador {
       $valapellido2 = $nuevoapellido2;
       $valemail  = $nuevoemail;
       $valimagen = $nuevaimagen;
+      $valdepartamento = $nuevodepartamento;
+      $valrol = $nuevorol;
+     
     } else { //Estamos rellenando los campos con los valores recibidos del listado
       if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
         $id = $_GET['id'];
@@ -440,8 +468,10 @@ class controlador {
           $valnombre = $resultModelo["datos"]["nombre"];
           $valapellido1 = $resultModelo["datos"]["apellido1"];
           $valapellido2 = $resultModelo['datos']["apellido2"];
+          $valrol = $resultModelo['datos']["rol"];
           $valemail  = $resultModelo["datos"]["email"];
           $valimagen = $resultModelo["datos"]["imagen"];
+          $valdepartamento = $resultModelo["datos"]["departamento"];
         else :
           $this->mensajes[] = [
               "tipo" => "danger",
@@ -459,7 +489,9 @@ class controlador {
             "nombre" => $valnombre,
             "apellido1" => $valapellido1,
             "apellido2" => $valapellido2,
+            "rol" => $valrol,
             "email"  => $valemail,
+            "departamento" => $valdepartamento,
             "imagen" => $valimagen
         ],
         "mensajes" => $this->mensajes

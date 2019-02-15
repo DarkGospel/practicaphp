@@ -230,8 +230,8 @@ class modelo {
       //Inicializamos la transacción
       $this->conexion->beginTransaction();
       //Definimos la instrucción SQL parametrizada 
-      $sql = "INSERT INTO usuarios(nombre,password,email,imagen, nickname)
-                         VALUES (:nombre,:password,:email,:imagen, :nickname)";
+      $sql = "INSERT INTO usuarios(nombre,password,email,imagen, nickname, rol, apellido1, apellido2, telefonomov, telefonofijo, departamento, NIF)
+                         VALUES (:nombre,:password,:email,:imagen, :nickname, 'Profesor', :apellido1, :apellido2, :movil, :fijo, :departamento, :nif)";
       // Preparamos la consulta...
       $query = $this->conexion->prepare($sql);
       // y la ejecutamos indicando los valores que tendría cada parámetro
@@ -240,6 +240,12 @@ class modelo {
           'nickname' => $datos["nickname"],
           'password' => $datos["password"],
           'email' => $datos["email"],
+          'apellido1'  => $datos["apellido1"],
+          'apellido2'  => $datos["apellido2"],
+          'movil'  => $datos["movil"],
+          'fijo'  => $datos["fijo"],
+          'departamento' => $datos["departamento"],
+          'nif' => $datos["nif"],
           'imagen' => $datos["imagen"]
         ]); //Supervisamos si la inserción se realizó correctamente... 
       if ($query) {
@@ -260,12 +266,13 @@ class modelo {
         "correcto" => FALSE,
         "error" => NULL
     ];
+   
 
     try {
       //Inicializamos la transacción
       $this->conexion->beginTransaction();
       //Definimos la instrucción SQL parametrizada 
-      $sql = "UPDATE usuarios SET NIF= :NIF, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, imagen= :imagen, email= :email  WHERE idUsuarios=:id";
+      $sql = "UPDATE usuarios SET NIF= :NIF, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, imagen= :imagen, rol= :rol, departamento= :departamento, email= :email  WHERE idUsuarios=:id";
       $query = $this->conexion->prepare($sql);
       $query->execute([
           'id' => $datos["id"],
@@ -274,7 +281,9 @@ class modelo {
           'apellido1' => $datos["apellido1"],
           'apellido2' => $datos["apellido2"],
           'imagen' => $datos["imagen"],
-          'email' => $datos["email"]
+          'rol' => $datos["rol"],
+          'email' => $datos["email"],
+          'departamento' => $datos["departamento"]
               ]);
       //Supervisamos si la inserción se realizó correctamente... 
       if ($query) {

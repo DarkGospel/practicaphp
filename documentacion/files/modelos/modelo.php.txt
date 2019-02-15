@@ -13,7 +13,7 @@ class modelo {
   private $host = "localhost";
   private $user = "root";
   private $pass = "";
-  private $db = "practica_php";
+  private $db = "practicaphp";
 
   /**
    * Constructor de la clase que ejecutará directamente el método 'conectar()'
@@ -31,6 +31,7 @@ class modelo {
     try {
       $this->conexion = new PDO("mysql:host=$this->host;dbname=$this->db", $this->user, $this->pass);
       $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $this->conexion->query("SET NAMES 'utf8'");
       return TRUE;
     } catch (PDOException $ex) {
       return $ex->getMessage();
@@ -58,13 +59,25 @@ class modelo {
    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
    * @return type
       */
+  public function verificarlogs($usuario, $rol, $accion){
+      $procedimiento = "CALL logs('$usuario', '$rol', '$accion')";
+      $query2 = $this->conexion->prepare($procedimiento);
+      $query2->execute(['nombre' => $usuario,
+              'rol' => $rol,
+              'accion' => $accion]);
+  }
   public function existeUsuario($usuario) {
     try 
     {
-        $sql = "SELECT * FROM usuario WHERE nombre_usuario=:nombre";
-
+        $sql = "SELECT * FROM usuarios WHERE nickname=:nombre";
+        $sql2 = "SELECT rol FROM usuarios WHERE nickname=:nombre";
         $query = $this->conexion->prepare($sql);
         $query->execute(['nombre' => $usuario]);
+        $resultsquery = $this->conexion->prepare($sql2);
+        $resultsquery->execute(['nombre'=>$usuario]);
+        $usuariolog = $resultsquery-> fetch(PDO::FETCH_ASSOC);
+        $usuariolog = $usuariolog["rol"];
+        $this->verificarlogs($usuario, $usuariolog, "Inicio sesion");
         if(isset($query))
         {
             $resultado = $query->fetch(PDO::FETCH_ASSOC);
@@ -81,7 +94,43 @@ class modelo {
     return $resultado;
   }
   
+  public function verlogs($regsxpag, $pagina){
+    $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
+    //Realizamos la consulta...
+    try {  //Definimos la instrucción SQL  
+    $inicio= ($pagina>1)? (($pagina*$regsxpag)-$regsxpag): 0;
+    //Preparamos la consulta que vamos a realizar utilizando el parámetro SQL_CALC_FOUND_ROWS, 
+    //que requerido por la función FOUND_ROWS() para poder obtener el número de filas obtenidas de la consulata 
+    //sin tener que realizar otra nueva con el COUNT
+    $sql="SELECT SQL_CALC_FOUND_ROWS * FROM log LIMIT $inicio, $regsxpag";
+    $resultsquery = $this->conexion->query($sql);
+    //$registros=$registros->fetchAll(PDO::FETCH_ASSOC);
 
+    //Calculamos el número de registros obtenidos
+    $totalregistros= $this->conexion->query("SELECT FOUND_ROWS() as total");
+    $totalregistros= $totalregistros->fetch()['total'];
+    //Determinamos el número de páginas de la que constará mi paginación
+    $numpaginas=ceil($totalregistros/$regsxpag);
+    //  $sql = "SELECT * FROM log";
+      // Hacemos directamente la consulta al no tener parámetros
+      
+      //Supervisamos si la inserción se realizó correctamente... 
+      if ($resultsquery) :
+        $return["correcto"] = TRUE;
+        $return["registros"] = $totalregistros;
+        $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+        $return["paginas"] = $numpaginas;
+      endif; // o no :(
+    } catch (PDOException $ex) {
+      $return["error"] = $ex->getMessage();
+    }
+
+    return $return;
+}
   /**
    * Función que realiza el listado de todos los usuarios registrados
    * Devuelve un array asociativo con tres campos:
@@ -90,21 +139,36 @@ class modelo {
    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
    * @return type
    */
-  public function listado() {
-    $return = [
+  public function listado($regsxpag, $pagina) {
+   $return = [
         "correcto" => FALSE,
         "datos" => NULL,
         "error" => NULL
     ];
     //Realizamos la consulta...
     try {  //Definimos la instrucción SQL  
-      $sql = "SELECT * FROM usuarios";
+    $inicio= ($pagina>1)? (($pagina*$regsxpag)-$regsxpag): 0;
+    //Preparamos la consulta que vamos a realizar utilizando el parámetro SQL_CALC_FOUND_ROWS, 
+    //que requerido por la función FOUND_ROWS() para poder obtener el número de filas obtenidas de la consulata 
+    //sin tener que realizar otra nueva con el COUNT
+    $sql="SELECT SQL_CALC_FOUND_ROWS * FROM usuarios LIMIT $inicio, $regsxpag";
+    $resultsquery = $this->conexion->query($sql);
+    //$registros=$registros->fetchAll(PDO::FETCH_ASSOC);
+
+    //Calculamos el número de registros obtenidos
+    $totalregistros= $this->conexion->query("SELECT FOUND_ROWS() as total");
+    $totalregistros= $totalregistros->fetch()['total'];
+    //Determinamos el número de páginas de la que constará mi paginación
+    $numpaginas=ceil($totalregistros/$regsxpag);
+    //  $sql = "SELECT * FROM log";
       // Hacemos directamente la consulta al no tener parámetros
-      $resultsquery = $this->conexion->query($sql);
+      
       //Supervisamos si la inserción se realizó correctamente... 
       if ($resultsquery) :
         $return["correcto"] = TRUE;
+        $return["registros"] = $totalregistros;
         $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+        $return["paginas"] = $numpaginas;
       endif; // o no :(
     } catch (PDOException $ex) {
       $return["error"] = $ex->getMessage();
@@ -132,7 +196,7 @@ class modelo {
         //Inicializamos la transacción
         $this->conexion->beginTransaction();
         //Definimos la instrucción SQL parametrizada 
-        $sql = "DELETE FROM usuarios WHERE id=:id";
+        $sql = "DELETE FROM usuarios WHERE idUsuarios=:id";
         $query = $this->conexion->prepare($sql);
         $query->execute(['id' => $id]);
         //Supervisamos si la eliminación se realizó correctamente... 
@@ -166,17 +230,18 @@ class modelo {
       //Inicializamos la transacción
       $this->conexion->beginTransaction();
       //Definimos la instrucción SQL parametrizada 
-      $sql = "INSERT INTO usuarios(nombre,password,email,imagen)
-                         VALUES (:nombre,:password,:email , :imagen)";
+      $sql = "INSERT INTO usuarios(nombre,password,email,imagen, nickname)
+                         VALUES (:nombre,:password,:email,:imagen, :nickname)";
       // Preparamos la consulta...
       $query = $this->conexion->prepare($sql);
       // y la ejecutamos indicando los valores que tendría cada parámetro
       $query->execute([
           'nombre' => $datos["nombre"],
+          'nickname' => $datos["nickname"],
           'password' => $datos["password"],
           'email' => $datos["email"],
           'imagen' => $datos["imagen"]
-      ]); //Supervisamos si la inserción se realizó correctamente... 
+        ]); //Supervisamos si la inserción se realizó correctamente... 
       if ($query) {
         $this->conexion->commit(); // commit() confirma los cambios realizados durante la transacción
         $return["correcto"] = TRUE;
@@ -200,14 +265,17 @@ class modelo {
       //Inicializamos la transacción
       $this->conexion->beginTransaction();
       //Definimos la instrucción SQL parametrizada 
-      $sql = "UPDATE usuarios SET nombre= :nombre, email= :email, imagen= :imagen WHERE id=:id";
+      $sql = "UPDATE usuarios SET NIF= :NIF, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, imagen= :imagen, email= :email  WHERE idUsuarios=:id";
       $query = $this->conexion->prepare($sql);
       $query->execute([
           'id' => $datos["id"],
+          'NIF' => $datos["NIF"],
           'nombre' => $datos["nombre"],
-          'email' => $datos["email"],
-          'imagen' => $datos["imagen"]
-      ]);
+          'apellido1' => $datos["apellido1"],
+          'apellido2' => $datos["apellido2"],
+          'imagen' => $datos["imagen"],
+          'email' => $datos["email"]
+              ]);
       //Supervisamos si la inserción se realizó correctamente... 
       if ($query) {
         $this->conexion->commit();  // commit() confirma los cambios realizados durante la transacción
@@ -231,7 +299,7 @@ class modelo {
 
     if ($id && is_numeric($id)) {
       try {
-        $sql = "SELECT * FROM usuarios WHERE id=:id";
+        $sql = "SELECT * FROM usuarios WHERE idUsuarios=:id";
         $query = $this->conexion->prepare($sql);
         $query->execute(['id' => $id]);
         //Supervisamos que la consulta se realizó correctamente... 
@@ -247,6 +315,102 @@ class modelo {
 
     return $return;
   }
+  public function activar($id){
+  $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
 
+    if ($id && is_numeric($id)) {
+      try {
+        $sql = "UPDATE usuarios SET activo=1  WHERE idUsuarios=:id";
+        $query = $this->conexion->prepare($sql);
+        $query->execute(['id' => $id]);
+        //Supervisamos que la consulta se realizó correctamente... 
+        if ($query) {
+          $return["correcto"] = TRUE;
+          $return["datos"] = $query->fetch(PDO::FETCH_ASSOC);
+        }// o no :(
+      } catch (PDOException $ex) {
+        $return["error"] = $ex->getMessage();
+        //die();
+      }
+    }
+
+    return $return;
+      
+  }
+  
+  public function desactivar($id){
+  $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
+
+    if ($id && is_numeric($id)) {
+      try {
+        $sql = "UPDATE usuarios SET activo=0  WHERE idUsuarios=:id";
+        $query = $this->conexion->prepare($sql);
+        $query->execute(['id' => $id]);
+        //Supervisamos que la consulta se realizó correctamente... 
+        if ($query) {
+          $return["correcto"] = TRUE;
+          $return["datos"] = $query->fetch(PDO::FETCH_ASSOC);
+        }// o no :(
+      } catch (PDOException $ex) {
+        $return["error"] = $ex->getMessage();
+        //die();
+      }
+    }
+
+    return $return;
+      
+  }
+  public function listadoaexportar() {
+    $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
+    //Realizamos la consulta...
+    try {  //Definimos la instrucción SQL  
+      $sql = "SELECT * FROM usuarios";
+      // Hacemos directamente la consulta al no tener parámetros
+      $resultsquery = $this->conexion->query($sql);
+      //Supervisamos si la inserción se realizó correctamente... 
+      if ($resultsquery) :
+        $return["correcto"] = TRUE;
+        $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+      endif; // o no :(
+    } catch (PDOException $ex) {
+      $return["error"] = $ex->getMessage();
+    }
+
+    return $return;
+  }
+  public function exportarlogs() {
+    $return = [
+        "correcto" => FALSE,
+        "datos" => NULL,
+        "error" => NULL
+    ];
+    //Realizamos la consulta...
+    try {  //Definimos la instrucción SQL  
+      $sql = "SELECT * FROM log";
+      // Hacemos directamente la consulta al no tener parámetros
+      $resultsquery = $this->conexion->query($sql);
+      //Supervisamos si la inserción se realizó correctamente... 
+      if ($resultsquery) :
+        $return["correcto"] = TRUE;
+        $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+      endif; // o no :(
+    } catch (PDOException $ex) {
+      $return["error"] = $ex->getMessage();
+    }
+
+    return $return;
+  }
 }
 

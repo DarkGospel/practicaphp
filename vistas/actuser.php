@@ -24,7 +24,22 @@
           <input type="text" class="form-control" name="apellido1" value="<?= $parametros["datos"]["apellido1"] ?>" required></label>
         <br/>
         <label for="apellido2">2ºapellido
-          <input type="text" class="form-control" name="apellido2" value="<?= $parametros["datos"]["apellido2"] ?>" required></label>
+          <input type="text" class="form-control" name="apellido2" value="<?= $parametros["datos"]["apellido2"] ?>"></label>
+        <br/>
+        <label for="rol">Rol
+            <select name="rol" class="form-control">
+                <?php if ($parametros["datos"]["rol"] == "Administrador"):?>
+                <option value='<?=$parametros["datos"]["rol"]?>' class="form-control"><?=$parametros["datos"]["rol"]?></option>
+                <option value="Profesor" class="form-control">Profesor</option>                
+                <?php else: ?>
+                <option value='<?=$parametros["datos"]["rol"]?>' class="form-control"><?=$parametros["datos"]["rol"]?></option>
+                <option value="Administrador" class="form-control">Administrador</option>
+                <?php endif;?>
+            </select>
+        </label>
+        <br>
+        <label for="departamento">Departamento
+          <input type="text" class="form-control" name="departamento" value="<?= $parametros["datos"]["departamento"] ?>"></label>
         <br/>
         <label for="email">Email
           <input type="email" class="form-control" name="email" value="<?= $parametros["datos"]["email"] ?>" required></label>

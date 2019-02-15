@@ -24,7 +24,7 @@
         $arr = json_decode($response, TRUE);
         
         if($arr['success']){
-            echo "<h2>Thanks</h2>";
+            echo "<h2></h2>";
         }else{
             echo '<h3>Error al comprobar Captcha </h3>';
         }
@@ -42,17 +42,38 @@
           <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
         <?php endforeach; ?>
         <form action="index.php?action=adduser" method="post" enctype="multipart/form-data">
-          <label for="txtnombre">Nombre
+          <label for="txtnombre">Nombre *
             <input type="text" class="form-control" name="txtnombre" required value="<?= $parametros["datos"]["txtnombre"] ?>"></label>
           <br/>
-          <label for="txtnick">Nombre usuario
+          <label for="nif">NIF *
+            <input type="text" class="form-control" name="nif" required value="<?= $parametros["datos"]["nif"] ?>"></label>
+          <br/>
+          <label for="txtnick">Nombre usuario *
             <input type="text" class="form-control" name="txtnick" required value="<?= $parametros["datos"]["txtnick"] ?>"></label>
           <br/>
-          <label for="txtemail">Email
+          <label for="txtapellido1">Apellido 1 *
+            <input type="text" class="form-control" name="txtapellido1" required value="<?= $parametros["datos"]["txtapellido1"] ?>"></label>
+          
+          <label for="txtapellido2">Apellido 2 
+            <input type="text" class="form-control" name="txtapellido2" value="<?= $parametros["datos"]["txtapellido2"] ?>"></label>
+          <br/>          
+          <label for="txtemail">Email *
             <input type="email" class="form-control" name="txtemail" value="<?= $parametros["datos"]["txtemail"] ?>"></label>
           <br/>
-          <label for="txtpass">Contraseña
+          <label for="txtpass">Contraseña *
             <input type="password" class="form-control" name="txtpass" required value="<?= $parametros["datos"]["txtpass"] ?>"></label>
+          <br/>
+          <label for="txtmovil">Telefono Movil *
+            <input type="text" class="form-control" name="txtmovil" required value="<?= $parametros["datos"]["txtmovil"] ?>"></label>
+          
+          <label for="txtfijo">Telefono fijo
+            <input type="text" class="form-control" name="txtfijo"  value="<?= $parametros["datos"]["txtfijo"] ?>"></label>
+          <br/>
+          <label for="txtdepartamento">Departamento *
+            <input type="text" class="form-control" name="txtdepartamento" required value="<?= $parametros["datos"]["txtdepartamento"] ?>"></label>
+          <br/>
+          <label for="txtnick">Nombre usuario *
+            <input type="text" class="form-control" name="txtnick" required value="<?= $parametros["datos"]["txtnick"] ?>"></label>
           <br/>
           <label for="imagen">Imagen <input type="file" name="imagen" class="form-control" value="<?= $parametros["datos"]["imagen"] ?>" /></label>
           </br>          

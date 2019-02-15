@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>FinalPHP</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">FinalPHP</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Composer.html">\Composer</a></li>
+                                                        <li><a href="../namespaces/Spipu.html">\Spipu</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">551</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1930063948"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1930063948" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-696279195"></a>
+                                <a href="../namespaces/Composer.html" style="margin-left: 30px; padding-left: 0">Composer</a>
+            </div>
+            <div id="namespace-696279195" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1211152928"></a>
+                                <a href="../namespaces/Composer.Autoload.html" style="margin-left: 30px; padding-left: 0">Autoload</a>
+            </div>
+            <div id="namespace-1211152928" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Composer.Autoload.ClassLoader.html">ClassLoader</a></li>
+                                                    <li class="class"><a href="../classes/Composer.Autoload.ComposerStaticInit246b59a80761618e501aca13b37acf7f.html">ComposerStaticInit246b59a80761618e501aca13b37acf7f</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1146171831"></a>
+                                <a href="../namespaces/Spipu.html" style="margin-left: 30px; padding-left: 0">Spipu</a>
+            </div>
+            <div id="namespace-1146171831" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-335713457"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.html" style="margin-left: 30px; padding-left: 0">Html2Pdf</a>
+            </div>
+            <div id="namespace-335713457" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-804965157"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Debug.html" style="margin-left: 30px; padding-left: 0">Debug</a>
+            </div>
+            <div id="namespace-804965157" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Spipu.Html2Pdf.Debug.DebugInterface.html">DebugInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Debug.Debug.html">Debug</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1829942021"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1829942021" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Exception.ExceptionFormatter.html">ExceptionFormatter</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Exception.Html2PdfException.html">Html2PdfException</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Exception.HtmlParsingException.html">HtmlParsingException</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Exception.ImageException.html">ImageException</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Exception.LocaleException.html">LocaleException</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Exception.LongSentenceException.html">LongSentenceException</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Exception.TableException.html">TableException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1038330778"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Extension.html" style="margin-left: 30px; padding-left: 0">Extension</a>
+            </div>
+            <div id="namespace-1038330778" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-112045571"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Extension.Core.html" style="margin-left: 30px; padding-left: 0">Core</a>
+            </div>
+            <div id="namespace-112045571" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Extension.Core.HtmlExtension.html">HtmlExtension</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Extension.Core.SvgExtension.html">SvgExtension</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Spipu.Html2Pdf.Extension.ExtensionInterface.html">ExtensionInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Extension.AbstractExtension.html">AbstractExtension</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-118816109"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Parsing.html" style="margin-left: 30px; padding-left: 0">Parsing</a>
+            </div>
+            <div id="namespace-118816109" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Parsing.Css.html">Css</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Parsing.Html.html">Html</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Parsing.HtmlLexer.html">HtmlLexer</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Parsing.Node.html">Node</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Parsing.TagParser.html">TagParser</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Parsing.TextParser.html">TextParser</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Parsing.Token.html">Token</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1075515723"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tag.html" style="margin-left: 30px; padding-left: 0">Tag</a>
+            </div>
+            <div id="namespace-1075515723" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1673218672"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tag.Html.html" style="margin-left: 30px; padding-left: 0">Html</a>
+            </div>
+            <div id="namespace-1673218672" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Address.html">Address</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.B.html">B</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Big.html">Big</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Bookmark.html">Bookmark</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Cite.html">Cite</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Del.html">Del</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Em.html">Em</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Font.html">Font</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.I.html">I</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Ins.html">Ins</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Label.html">Label</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.S.html">S</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Samp.html">Samp</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Small.html">Small</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Span.html">Span</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Strong.html">Strong</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Sub.html">Sub</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.Sup.html">Sup</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Html.U.html">U</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1451472716"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tag.Svg.html" style="margin-left: 30px; padding-left: 0">Svg</a>
+            </div>
+            <div id="namespace-1451472716" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Svg.Circle.html">Circle</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Svg.Ellipse.html">Ellipse</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Svg.G.html">G</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Svg.Line.html">Line</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Svg.Path.html">Path</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Svg.Polygon.html">Polygon</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Svg.Polyline.html">Polyline</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.Svg.Rect.html">Rect</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Spipu.Html2Pdf.Tag.TagInterface.html">TagInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.AbstractHtmlTag.html">AbstractHtmlTag</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.AbstractSvgTag.html">AbstractSvgTag</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tag.AbstractTag.html">AbstractTag</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1758542818"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tests.html" style="margin-left: 30px; padding-left: 0">Tests</a>
+            </div>
+            <div id="namespace-1758542818" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2037904884"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tests.Debug.html" style="margin-left: 30px; padding-left: 0">Debug</a>
+            </div>
+            <div id="namespace-2037904884" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Debug.DebugTest.html">DebugTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1303649663"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tests.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1303649663" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Exception.ExceptionFormatterTest.html">ExceptionFormatterTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Exception.LongSentenceExceptionTest.html">LongSentenceExceptionTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1145712929"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tests.Output.html" style="margin-left: 30px; padding-left: 0">Output</a>
+            </div>
+            <div id="namespace-1145712929" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Output.FileNameOkTest.html">FileNameOkTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-828022039"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tests.Parsing.html" style="margin-left: 30px; padding-left: 0">Parsing</a>
+            </div>
+            <div id="namespace-828022039" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.BackgroundErrorTest.html">BackgroundErrorTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.BackgroundOkTest.html">BackgroundOkTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.HtmlLexerTest.html">HtmlLexerTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.HtmlTest.html">HtmlTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.ParsingTest.html">ParsingTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.SrcErrorTest.html">SrcErrorTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.SrcOkTest.html">SrcOkTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.TagParserTest.html">TagParserTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.TextParserTest.html">TextParserTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Parsing.TokenTest.html">TokenTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2046119085"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tests.Tag.html" style="margin-left: 30px; padding-left: 0">Tag</a>
+            </div>
+            <div id="namespace-2046119085" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-698188099"></a>
+                                <a href="../namespaces/Spipu.Html2Pdf.Tests.Tag.Svg.html" style="margin-left: 30px; padding-left: 0">Svg</a>
+            </div>
+            <div id="namespace-698188099" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.Svg.CircleErrorTest.html">CircleErrorTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.Svg.EllipseErrorTest.html">EllipseErrorTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.Svg.GErrorTest.html">GErrorTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.Svg.LineErrorTest.html">LineErrorTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.Svg.PathErrorTest.html">PathErrorTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.Svg.PathInvalidTest.html">PathInvalidTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.Svg.PolygonErrorTest.html">PolygonErrorTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.Svg.PolylineErrorTest.html">PolylineErrorTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.Svg.RectErrorTest.html">RectErrorTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.DivTest.html">DivTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.MustHaveTagsTest.html">MustHaveTagsTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Tag.TdTooLongTest.html">TdTooLongTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.AbstractTest.html">AbstractTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.CssConverterTest.html">CssConverterTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html">ExamplesTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.Html2PdfTest.html">Html2PdfTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.LocaleTest.html">LocaleTest</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Tests.SvgDrawerTest.html">SvgDrawerTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.CssConverter.html">CssConverter</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Html2Pdf.html">Html2Pdf</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.Locale.html">Locale</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.MyPdf.html">MyPdf</a></li>
+                                                    <li class="class"><a href="../classes/Spipu.Html2Pdf.SvgDrawer.html">SvgDrawer</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/ComposerAutoloaderInit246b59a80761618e501aca13b37acf7f.html">ComposerAutoloaderInit246b59a80761618e501aca13b37acf7f</a></li>
+                                                    <li class="class"><a href="../classes/controlador.html">controlador</a></li>
+                                                    <li class="class"><a href="../classes/Datamatrix.html">Datamatrix</a></li>
+                                                    <li class="class"><a href="../classes/MC_TCPDF.html">MC_TCPDF</a></li>
+                                                    <li class="class"><a href="../classes/modelo.html">modelo</a></li>
+                                                    <li class="class"><a href="../classes/MYPDF.html">MYPDF</a></li>
+                                                    <li class="class"><a href="../classes/MYPDF.html">MYPDF</a></li>
+                                                    <li class="class"><a href="../classes/MYPDF.html">MYPDF</a></li>
+                                                    <li class="class"><a href="../classes/MYPDF.html">MYPDF</a></li>
+                                                    <li class="class"><a href="../classes/PDF417.html">PDF417</a></li>
+                                                    <li class="class"><a href="../classes/QRcode.html">QRcode</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF.html">TCPDF</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF2DBarcode.html">TCPDF2DBarcode</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF_COLORS.html">TCPDF_COLORS</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF_FILTERS.html">TCPDF_FILTERS</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF_FONT_DATA.html">TCPDF_FONT_DATA</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF_FONTS.html">TCPDF_FONTS</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF_IMAGES.html">TCPDF_IMAGES</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF_IMPORT.html">TCPDF_IMPORT</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF_PARSER.html">TCPDF_PARSER</a></li>
+                                                    <li class="class"><a href="../classes/TCPDF_STATIC.html">TCPDF_STATIC</a></li>
+                                                    <li class="class"><a href="../classes/TCPDFBarcode.html">TCPDFBarcode</a></li>
+                                                    <li class="class"><a href="../classes/TOC_TCPDF.html">TOC_TCPDF</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Spipu.Html2Pdf.Tests.html">\Spipu\Html2Pdf\Tests</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Spipu\Html2Pdf\Tests</small>ExamplesTest</h1>
+                    <p><em>Class ExamplesTest</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testAbout" class="">testAbout()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testBookmark" class="">testBookmark()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testBalloon" class="">testBalloon()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample01" class="">testExample01()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample02" class="">testExample02()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample03" class="">testExample03()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample04" class="">testExample04()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample05" class="">testExample05()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample06" class="">testExample06()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample07" class="">testExample07()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample08" class="">testExample08()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample10" class="">testExample10()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample11" class="">testExample11()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample12" class="">testExample12()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample13" class="">testExample13()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testExample14" class="">testExample14()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testForms" class="">testForms()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testGroups" class="">testGroups()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testQrcode" class="">testQrcode()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testRadius" class="">testRadius()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testMeasure" class="">testMeasure()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testSvg" class="">testSvg()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testSvgTiger" class="">testSvgTiger()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testSvgTree" class="">testSvgTree()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testTicket" class="">testTicket()</a><br />
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_testUtf8" class="">testUtf8()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Spipu.Html2Pdf.Tests.ExamplesTest.html#method_launchExample" class="">launchExample()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/vendor.spipu.html2pdf.src.Tests.ExamplesTest.html"><div class="path-wrapper">vendor\spipu\html2pdf\src\Tests\ExamplesTest.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Html2pdf</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper">\PHPUnit_Framework_TestCase</div>
+                                                                                                    <div class="namespace-wrapper">\Spipu\Html2Pdf\Tests\ExamplesTest</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                        
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testAbout" name="method_testAbout" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testAbout()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testAbout() : void</pre>
+                <p><em>test: about</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testBookmark" name="method_testBookmark" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testBookmark()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testBookmark() : void</pre>
+                <p><em>test: bookmark</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testBalloon" name="method_testBalloon" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testBalloon()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testBalloon() : void</pre>
+                <p><em>test: bookmark</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample01" name="method_testExample01" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample01()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample01() : void</pre>
+                <p><em>test: example01</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample02" name="method_testExample02" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample02()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample02() : void</pre>
+                <p><em>test: example02</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample03" name="method_testExample03" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample03()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample03() : void</pre>
+                <p><em>test: example03</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample04" name="method_testExample04" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample04()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample04() : void</pre>
+                <p><em>test: example04</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample05" name="method_testExample05" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample05()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample05() : void</pre>
+                <p><em>test: example05</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample06" name="method_testExample06" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample06()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample06() : void</pre>
+                <p><em>test: example06</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample07" name="method_testExample07" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample07()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample07() : void</pre>
+                <p><em>test: example07</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample08" name="method_testExample08" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample08()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample08() : void</pre>
+                <p><em>test: example08</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample10" name="method_testExample10" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample10()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample10() : void</pre>
+                <p><em>test: example10</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample11" name="method_testExample11" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample11()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample11() : void</pre>
+                <p><em>test: example11</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample12" name="method_testExample12" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample12()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample12() : void</pre>
+                <p><em>test: example12</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample13" name="method_testExample13" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample13()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample13() : void</pre>
+                <p><em>test: example13</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testExample14" name="method_testExample14" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testExample14()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testExample14() : void</pre>
+                <p><em>test: example14</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testForms" name="method_testForms" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testForms()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testForms() : void</pre>
+                <p><em>test: forms</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testGroups" name="method_testGroups" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testGroups()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testGroups() : void</pre>
+                <p><em>test: groups</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testQrcode" name="method_testQrcode" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testQrcode()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testQrcode() : void</pre>
+                <p><em>test: qrcode</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testRadius" name="method_testRadius" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testRadius()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testRadius() : void</pre>
+                <p><em>test: radius</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testMeasure" name="method_testMeasure" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testMeasure()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testMeasure() : void</pre>
+                <p><em>test: regle</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testSvg" name="method_testSvg" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testSvg()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testSvg() : void</pre>
+                <p><em>test: svg</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testSvgTiger" name="method_testSvgTiger" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testSvgTiger()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testSvgTiger() : void</pre>
+                <p><em>test: svg_tiger</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testSvgTree" name="method_testSvgTree" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testSvgTree()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testSvgTree() : void</pre>
+                <p><em>test: svg_tree</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testTicket" name="method_testTicket" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testTicket()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testTicket() : void</pre>
+                <p><em>test: ticket</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_testUtf8" name="method_testUtf8" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">testUtf8()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">testUtf8() : void</pre>
+                <p><em>test: utf8</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in C:\xampp\phpDocumentor-2.9.0\phpDocumentor-2.9.0\vendor\twig\twig\lib\Twig\Extension\Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_launchExample" name="method_launchExample" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">launchExample()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">launchExample(string  <span class="argument">$example</span>) : void</pre>
+                <p><em>Launch a example</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$example </td>
+                                <td><p>code of the example</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">ExamplesTest.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/vendor\spipu\html2pdf\src\Tests\ExamplesTest.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Composer.html">\Composer</a></li>
+                                                                            <li><a href="../namespaces/Spipu.html">\Spipu</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on February 14th, 2019 at 17:32.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
